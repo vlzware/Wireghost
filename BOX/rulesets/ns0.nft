@@ -1,0 +1,41 @@
+#!/usr/sbin/nft -f
+# nft.ns0.ruleset
+
+# ruleset for the namespace ns0 : facing the internal net
+
+include "/home/pi/BOX/conf/variables.nft"
+include "/home/pi/BOX/conf/constants.nft"
+
+flush ruleset
+
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority 0; policy accept;
+        oifname "veth0" masquerade
+    }
+    chain prerouting {
+        type filter hook prerouting priority filter; policy accept;
+        iifname "veth0" ip saddr $VIRTIP2 ip daddr $VIRTIP1 ip saddr set $VIRTHOSTIP ip daddr set $IPINT
+    }
+    chain input {
+        type filter hook input priority filter; policy accept;
+    }
+    chain output {
+        type filter hook output priority filter; policy accept;
+    }
+    chain forward {
+        type filter hook forward priority filter; policy accept;
+    }
+}
+
+table netdev filter {
+    chain ingress_ifaceint {
+        type filter hook ingress device $IFACEINT priority filter; policy accept;
+        ether saddr $MACINT udp sport 68 udp dport 67 fwd to "veth0" # dhcp int=>ext
+        ip saddr $IPINT ip daddr $VIRTHOSTIP ip saddr set $VIRTIP1 ip daddr set $VIRTIP2
+    }
+    chain ingress_veth0 {
+        type filter hook ingress device "veth0" priority filter; policy accept;
+        ether daddr $MACINT udp sport 67 udp dport 68 fwd to $IFACEINT # dhcp int<=ext
+    }
+}

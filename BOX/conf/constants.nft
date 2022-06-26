@@ -1,0 +1,7 @@
+define VETH0IP= "10.53.52.1"
+define VETH1IP = "10.53.52.2"
+
+define VIRTIP1 = "10.61.40.99"
+define VIRTIP2 = "10.62.40.99"
+
+define VIRTHOSTIP = "99.99.99.99"

@@ -1,0 +1,50 @@
+#!/usr/sbin/nft -f
+# nft.ruleset
+
+# ruleset for the namespace default : facing the external net
+
+include "/home/pi/BOX/conf/variables.nft"
+include "/home/pi/BOX/conf/constants.nft"
+
+flush ruleset
+
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority filter; policy accept;
+        oifname $IFACEEXT masquerade
+    }
+    chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+        iifname "veth1" meta l4proto {tcp, udp} th dport 53 counter dnat to $IPINT
+    }
+
+    chain input {
+        type filter hook input priority filter; policy drop;
+        ct state vmap { established : accept, related : accept, invalid : drop }
+        iifname "lo" accept;
+        iifname "veth1" accept;
+    }
+
+    chain output {
+        type filter hook output priority filter; policy accept;
+        ip saddr $IPINT ip daddr $VETH0IP ip saddr set $VIRTIP2
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        iifname "veth1" accept;
+        oifname "veth1" accept;
+    }
+}
+
+table netdev filter {
+    chain ingress_veth1 {
+        type filter hook ingress device "veth1" priority filter; policy accept;
+        ether saddr $MACINT udp sport 68 udp dport 67 fwd to $IFACEEXT # dhcp int=>ext
+        ip daddr $VIRTIP2 ip daddr set $IPINT
+    }
+    chain ingress_ifaceext {
+        type filter hook ingress device $IFACEEXT priority filter; policy accept;
+        ether daddr $MACINT udp sport 67 udp dport 68 fwd to "veth1" # dhcp int<=ext
+    }
+}
