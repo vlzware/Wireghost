@@ -13,4 +13,4 @@
 - A connection on the edge of a network offers the most possibilities: data filter, firewall, external access, etc.
 
 
-This repository contains the further work on the project from my <a href="https://github.com/vlzware/AKAD_BEDEN/tree/master/Bachelorarbeit">bachelor thesis</a>
+This repository contains the further work on the project from my <a href="https://github.com/vlzware/AKAD_BEDEN/tree/master/Bachelorarbeit">bachelor thesis</a>  (See the <a href="CHANGELOG">CHANGELOG</a> for more information)
