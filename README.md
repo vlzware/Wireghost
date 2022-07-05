@@ -1,8 +1,8 @@
 # WIREGHOST
 ### Plug-And-Play network device, with no need of a configuration or even an IP-address, with the goal of quick and easy deployment of a server/filter in an arbitrary network
 
+<br /><br />
 <img src="media/installation.png" />
-<img src="media/interceptor_en.png" />
 
 **What is this?**
 
@@ -71,6 +71,11 @@ on the device are possible;
 - A connection on the edge of a network offers the most
 possibilities: data filter, firewall, external access, etc.
 
+**Internal function overview**
+<br /><br />
+<img src="media/interceptor_en.png" />
+
+<br /><br />
 This repository contains the further work on the project from my
 <a href="https://github.com/vlzware/AKAD_BEDEN/tree/master/Bachelorarbeit">bachelor thesis</a>
 (See the <a href="CHANGELOG">CHANGELOG</a> for more information)
