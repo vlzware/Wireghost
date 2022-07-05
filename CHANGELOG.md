@@ -1,3 +1,7 @@
+**05.06.2022**
+- Updated information
+- Added TODO.md
+
 **26.06.2022**
 - Updated the algorithms in "parse_network_data" to a more robust version;
 - Ditched the scapy-based approach to dhcp - instead now all connection on the dhcp ports are forwarded between the interfaces (One subshell with tcpdump still gets forked to watch for changes in the configuration);
